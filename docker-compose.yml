@@ -1,0 +1,28 @@
+services:
+  web:
+    build:
+      context: app
+    image: phpweb
+    networks: 
+      - mynet
+    ports:
+      - "80:80"
+    depends_on:
+      - db  # Ensure MSSQL starts first
+    restart: always
+
+  db:
+    build:
+      context: db
+    image: mssqldb
+    networks: 
+      - mynet
+    volumes :
+      - my-vol:/var/opt/mssql 
+
+volumes:
+  my-vol:
+
+networks:
+  mynet:
+    driver: bridge
